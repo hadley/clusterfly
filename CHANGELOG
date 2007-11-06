@@ -1,0 +1,7 @@
+clusterfly 0.2.3
+----------------------------------------
+
+  * Many tweaks to the display of SOMs
+  * Modified SOM visualisation to also work with SOMs from the Kohonen package
+  * added extra argument to clusterfly, to allow visualising variables that you don't use to cluster
+  * added method to extract clustering from partition objects (including clara and daisy) object

@@ -1,0 +1,13 @@
+Package: clusterfly
+Type: Package
+Title: Explore clustering interactively using R and GGobi
+Version: 0.2.3
+Date: 2007-10-12
+Author: Hadley Wickham <h.wickham@gmail.com>
+Maintainer: Hadley Wickham <h.wickham@gmail.com>
+Description: Visualise clustering algorithms with GGobi.  Contains both general code for visualising clustering results and specific visualisations for model-based, hierarchical and SOM clustering.
+URL: http://had.co.nz/clusterfly 
+Depends: rggobi, ggplot2, reshape, e1071, cluster
+Suggests: som, mclust, kohonen, far, mlbench
+License: MIT
+LazyData: true
