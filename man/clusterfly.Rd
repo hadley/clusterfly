@@ -38,4 +38,5 @@ ol <- cfly_cluster(ol, kmeans, 4, name="k4-3")
 
 ggobi(ol)
 cfly_show(ol, "k4-1")
-\dontrun{ cfly_animate(ol, "k4-1") }}
+cfly_animate(ol, max = 5)
+if (!interactive()) close(ol)}

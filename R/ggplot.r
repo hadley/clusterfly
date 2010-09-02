@@ -10,7 +10,9 @@
 #' @export
 #' @keywords hplot
 #' @examples
+#' o <- olive_example()
 #' cfly_pcp(o, "kmeans") 
+#' if (!interactive()) close(o)
 cfly_pcp <- function(cfly, index, ...) {
   df <- cbind(cfly$df, .cluster=cfly$clusters[[index]])
   ggpcp(df, vars = setdiff(names(df), ".cluster")) + 
@@ -35,8 +37,10 @@ cfly_pcp <- function(cfly, index, ...) {
 #' @keywords hplot
 #' @export
 #' @examples
+#' o <- olive_example()
 #' cfly_dist(o, "kmeans")
 #' cfly_dist(o, "kmeans") + scale_y_continuous(limit=c(0, 2))
+#' if (!interactive()) close(o)
 cfly_dist <- function(cfly, index, scale="range") {
   df <- cbind(cfly$df, .cluster=factor(cfly$clusters[[index]]))
   dfm <- melt(rescaler(df, scale), id=".cluster")
@@ -55,7 +59,9 @@ cfly_dist <- function(cfly, index, scale="range") {
 #' @keywords hplot
 #' @export
 #' @examples
-#' cfly_fluct(o, "kmeans","hierarchical", clarify=TRUE) 
+#' o <- olive_example()
+#' cfly_fluct(o, "kmeans","Region", clarify=TRUE) 
+#' if (!interactive()) close(o)
 cfly_fluct <- function(cfly, a, b, clarify=TRUE, ...) {
   ca <- cfly$clusters[[a]]
   cb <- cfly$clusters[[b]]

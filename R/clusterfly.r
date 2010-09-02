@@ -21,11 +21,11 @@
 #' @seealso vignette("introduction")
 #' @export
 #' @S3method ggobi clusterfly
+#' @S3method close clusterfly
 #' @S3method print clusterfly
 #' @S3method "[[<-" clusterfly
 #' @S3method as.data.frame clusterfly
 #' @aliases clusterfly package-clusterfly
-#' @import rggobi
 #' @keywords dynamic 
 #' @examples
 #' olives <- read.csv(ggobi_find_file("data","olive.csv"))
@@ -36,25 +36,31 @@
 #'
 #' ggobi(ol)
 #' cfly_show(ol, "k4-1")
-#' \dontrun{ cfly_animate(ol, "k4-1") }
+#' cfly_animate(ol, max = 5)
+#' if (!interactive()) close(ol)
 clusterfly <- function(df, extra = NULL, rescale=TRUE) {
   if (rescale) df <- rescaler(df)
 
   g <- NULL
-  getg <- function(cf, reset=FALSE) {
-    if (reset && valid_ggobi(g)) close(g)
-    if (is.null(g) || !valid_ggobi(g)) {
+  open_ggobi <- function() {
+    if (is.null(g)) {
       clusters <- do.call("cbind", compact(list(df, extra)))
       g <<- ggobi(clusters)
     }
     invisible(g)
+  }
+  close_ggobi <- function() {
+    if (is.null(g)) return()
+    close(g)
+    g <<- NULL
   }
 
   structure(list(
     df = df, 
     extra = extra,
     clusters = list(), 
-    ggobi = getg
+    ggobi = open_ggobi,
+    close = close_ggobi
   ), class="clusterfly")
 }
 
@@ -69,8 +75,10 @@ clusterfly <- function(df, extra = NULL, rescale=TRUE) {
 #' @keywords dynamic 
 #' @export
 #' @examples
+#' o <- olive_example()
 #' cfly_show(o, 1)
-#' cfly_show(o, "kmeans")
+#' cfly_show(o, "Region")
+#' if (!interactive()) close(o)
 cfly_show <- function(cf, idx = "true", hulls = FALSE) {
   g <- cf$ggobi()[1]
   cl <- cf$clusters[[idx]]
@@ -82,6 +90,7 @@ cfly_show <- function(cf, idx = "true", hulls = FALSE) {
 }
 
 ggobi.clusterfly <- function(data, ...) data$ggobi()
+close.clusterfly <- function(con, ...) con$close()
 
 "[[<-.clusterfly" <- function(x, i, value) {
   x$clusters[[i]] <- value
@@ -126,6 +135,7 @@ as.data.frame.clusterfly <- function(x, ...) {
 #' @keywords manip
 #' @export
 #' @examples
+#' o <- olive_example()
 #' o <- cfly_clarify(o, "Region")
 cfly_clarify <- function(cf, reference=1, method="rowmax") {
   ref <- cf$clusters[[reference]]
@@ -146,6 +156,7 @@ cfly_clarify <- function(cf, reference=1, method="rowmax") {
 #' @keywords manip 
 #' @export
 #' @examples
+#' o <- olive_example() 
 #' cfly_cluster(o, kmeans, 4)
 #' cfly_cluster(o, kmeans, 4, name="blah")
 cfly_cluster <- function(cf, method, ..., name = deparse(substitute(method))) {
@@ -156,30 +167,37 @@ cfly_cluster <- function(cf, method, ..., name = deparse(substitute(method))) {
 
 #' Dynamic plot: Animate glyph colours
 #' 
-#' This function will animiate endless until you manually break the loop
+#' This function will animate until you manually break the loop
 #' using Ctrl-Break or Ctrl-C.   
 #' 
 #' @param cf list of cluster ids that you want to animate across
 #' @param clusters clusters to display
 #' @param pause clusters number of seconds to pause between each change
 #' @param print print current cluster to screen?
+#' @param max_iterations maximum number of interations
 #' @keywords dynamic 
 #' @export
 #' @examples
 #' # Press Ctrl-Break or Ctrl-C to exit
-#' \dontrun{cfly_animate(cfly_clarify(o))}
-cfly_animate <- function(cf, clusters = seq_along(cf$clusters), pause = 1, print=TRUE) {
+#' o <- olive_example() 
+#' cfly_animate(cfly_clarify(o), max = 5)
+#' if (!interactive()) close(o)
+cfly_animate <- function(cf, clusters = seq_along(cf$clusters), pause = 1, print=TRUE, max_iterations = 100) {
   g <- cf$ggobi()
   gd <- g[1]
 
   if (is.character(clusters)) clusters <- match(clusters, names(cf$clusters))
 
+  count <- 1
   while(TRUE) {
     for(i in clusters) {
       if (!valid_ggobi(g)) return()
       if (print) cat("Current cluster: ", names(cf$clusters)[i], "\n")
       glyph_colour(gd) <- cf$clusters[[i]]
       Sys.sleep(pause)
+
+      count <- count + 1
+      if (count > max_iterations) return()      
     }
   }
 }

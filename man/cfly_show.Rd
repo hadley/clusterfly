@@ -14,5 +14,7 @@
   \item{idx}{clustering to display}
   \item{hulls}{add convex hull? see \code{\link{addhull}} for details}
 }
-\examples{cfly_show(o, 1)
-cfly_show(o, "kmeans")}
+\examples{o <- olive_example()
+cfly_show(o, 1)
+cfly_show(o, "Region")
+if (!interactive()) close(o)}

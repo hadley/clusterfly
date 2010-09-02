@@ -15,4 +15,6 @@
   \item{clarify}{use \code{\link{clarify}} to rearranged cluster indices?}
   \item{...}{other arguments passed on to ggfluctuation}
 }
-\examples{cfly_fluct(o, "kmeans","hierarchical", clarify=TRUE)}
+\examples{o <- olive_example()
+cfly_fluct(o, "kmeans","Region", clarify=TRUE) 
+if (!interactive()) close(o)}

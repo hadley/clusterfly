@@ -22,5 +22,7 @@
   \item{index}{clustering to use}
   \item{scale}{scaling to use}
 }
-\examples{cfly_dist(o, "kmeans")
-cfly_dist(o, "kmeans") + scale_y_continuous(limit=c(0, 2))}
+\examples{o <- olive_example()
+cfly_dist(o, "kmeans")
+cfly_dist(o, "kmeans") + scale_y_continuous(limit=c(0, 2))
+if (!interactive()) close(o)}

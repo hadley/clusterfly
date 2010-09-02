@@ -19,5 +19,6 @@
   \item{...}{arguments passed to clustering method}
   \item{name}{name of clustering}
 }
-\examples{cfly_cluster(o, kmeans, 4)
+\examples{o <- olive_example() 
+cfly_cluster(o, kmeans, 4)
 cfly_cluster(o, kmeans, 4, name="blah")}

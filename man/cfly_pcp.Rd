@@ -18,4 +18,6 @@
   \item{index}{clustering to use}
   \item{...}{other arguments passed to \code{\link[ggplot2]{geom_line}}}
 }
-\examples{cfly_pcp(o, "kmeans")}
+\examples{o <- olive_example()
+cfly_pcp(o, "kmeans") 
+if (!interactive()) close(o)}

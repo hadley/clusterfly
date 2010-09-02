@@ -17,4 +17,5 @@
   \item{reference}{index to reference clustering}
   \item{method}{method to use, see \code{\link{clarify}}}
 }
-\examples{o <- cfly_clarify(o, "Region")}
+\examples{o <- olive_example()
+o <- cfly_clarify(o, "Region")}
