@@ -1,4 +1,12 @@
-clusterfly 0.2.3
+Version 0.3
+---------------------------------------
+
+* Update documentation
+* Remove functions that are irrelevant to clusterfly
+* Add a NAMESPACE
+* 
+
+Version 0.2.3
 ----------------------------------------
 
   * Many tweaks to the display of SOMs

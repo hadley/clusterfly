@@ -1,20 +1,30 @@
-# Visualise Kohonen self organising maps with GGobi
-# Displays both data, and map in original high-d space.
-# 
-# Map variables added as map1 and map2.  Plot these to 
-# get traditional SOM plot.  Tour over all other variables to
-# see how well the map fits the original data.
-# 
-# @arguments SOM object
-# @keyword cluster
-# @keyword dynamic
-#X \dontrun{
-#X d.music <- read.csv("http://www.ggobi.org/book/data/music-all.csv")
-#X 
-#X music <- rescaler(d.music)[complete.cases(d.music), 1:10]
-#X music.som <- som::som(music[,-(1:3)], 6, 6, neigh="bubble", rlen=1000)
-#X ggobi(music.som)
-#X }
+#' Visualise Kohonen self organising maps with GGobi
+#' Displays both data, and map in original high-d space.
+#' 
+#' Map variables added as map1 and map2.  Plot these to 
+#' get traditional SOM plot.  Tour over all other variables to
+#' see how well the map fits the original data.
+#' 
+#' @param data SOM object
+#' @param ... ignored
+#' @keywords cluster dynamic
+#' @export
+#' @examples
+#' \dontrun{
+#' d.music <- read.csv("http://www.ggobi.org/book/data/music-all.csv")
+#' 
+#' music <- rescaler(d.music)[complete.cases(d.music), 1:10]
+#' music.som <- som::som(music[,-(1:3)], 6, 6, neigh="bubble", rlen=1000)
+#' ggobi(music.som)
+#' }
+#' \dontrun{
+#' d.music <- read.csv("http://www.ggobi.org/book/data/music-all.csv")
+#' 
+#' music <- rescaler(d.music)[complete.cases(d.music), 1:10]
+#' music.hex <- kohonen::som(music[,-(1:3)], grid = somgrid(3, 3, "hexagonal"), rlen=1000) 
+#' music.rect <- kohonen::som(music[,-(1:3)], grid = somgrid(6, 6, "rectangular"), rlen=1000) 
+#' ggobi(music.rect)
+#' }
 ggobi.som <- function(data, ...) {
   som <- data
   original <- data.frame(
@@ -50,14 +60,6 @@ ggobi.som <- function(data, ...) {
   invisible(g)
 }
 
-#X \dontrun{
-#X d.music <- read.csv("http://www.ggobi.org/book/data/music-all.csv")
-#X 
-#X music <- rescaler(d.music)[complete.cases(d.music), 1:10]
-#X music.hex <- kohonen::som(music[,-(1:3)], grid = somgrid(3, 3, "hexagonal"), rlen=1000) 
-#X music.rect <- kohonen::som(music[,-(1:3)], grid = somgrid(6, 6, "rectangular"), rlen=1000) 
-#X ggobi(music.rect)
-#X }
 ggobi.kohonen <- function(data, extra = NULL, ...) {
   
   som <- data
@@ -99,8 +101,6 @@ ggobi.kohonen <- function(data, extra = NULL, ...) {
   invisible(g)
 }
 
-# Make edge structure for SOM net
-# @keyword internal
 make_rect_net <- function(xs, ys) {
   netlines <- with(expand.grid(y=1:(xs-1), x=1:(ys)), rbind(
     cbind((x - 1) * xs + y, (x - 1)     * xs + y + 1),

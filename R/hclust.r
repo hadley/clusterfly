@@ -8,21 +8,27 @@
 #    * Or for the particular nested set representation?
 
 
-# Hierfly, a method for visualisation hierarchical clustering.
-# This method supplements a data set with information needed to draw a dendrogram
-# 
-# Intermediate cluster nodes are added as needed, and positioned at the 
-# centroid of the combined clusters.
-# 
-# @arguments data set
-# @arguments distance metric to use, see \code{\link{dist}} for list of possibilities
-# @arguments cluster distance measure to use, see \code{\link{hclust}} for details
-# @returns object of type, hierfly
-# @seealso \code{\link{cut.hierfly}}, \code{\link{ggobi.hierfly}}
-# @keyword cluster
-#X h <- hierfly(iris)
-#X ggobi(h)
-#X h <- hierfly(iris, method="single")
+#' Visualisig hierarchical clustering.
+#' This method supplements a data set with information needed to draw a
+#' dendrogram
+#' 
+#' Intermediate cluster nodes are added as needed, and positioned at the 
+#' centroid of the combined clusters.
+#' 
+#' @param data data set
+#' @param metric distance metric to use, see \code{\link{dist}} for list of
+#'   possibilities
+#' @param method cluster distance measure to use, see \code{\link{hclust}} for
+#'   details
+#' @return object of type, hierfly
+#' @seealso \code{\link{cut.hierfly}}, \code{\link{ggobi.hierfly}}
+#' @keywords cluster
+#' @export
+#' @S3method print hierfly
+#' @examples
+#' h <- hierfly(iris)
+#' ggobi(h)
+#' h <- hierfly(iris, method="single")
 hierfly <- function(data, metric="euclidean", method="average") {
   cat <- sapply(data, is.factor)
   h <- hclust(dist(data[,!cat], metric), method)
@@ -46,8 +52,6 @@ hierfly <- function(data, metric="euclidean", method="average") {
   structure(list(data=data, hclust=h), class="hierfly")
 }
 
-# Combine multiple rows in cluster hierarchy to make intermediate node
-# @keyword internal
 combinerows <- function(df, cat) {
   same <- function(x) if (length(unique(x)) == 1) x[1] else NA
   points <- df$POINTS
@@ -66,41 +70,41 @@ combinerows <- function(df, cat) {
   df
 }
 
-
-# Method to print hierfly objects
-# @keyword internal 
 print.hierfly <- function(x, ...) {
   print(str(x))
 }
 
-# Visualise hierarchical clustering with GGobi
-# Displays both data, and dendrogram in original high-d space
-# 
-# This adds four new variables to the original data set:
-# 
-# \itemize{
-#    \item ORDER, the order in which the clusters are joined
-#    \item HEIGHT, the height of the branch, ie. the dissimilarity between the branches
-#    \item LEVEL, the level of the branch
-#    \item POINTS, the number of points in the branch
-# }
-#
-# Make sure to select "attach edge set (edges)" in the in the edges menu on the 
-# plot window, when you create a new plot.
-# 
-# A tour over the original variables will show how the clusters agglomerate
-# in space.   Plotting order vs height, level or points will give various
-# types of dendograms.  A correlation tour with height/level/points on the y 
-# axis and the original variables on the x axis will show a mobile blowing 
-# in the wind.
-# 
-# @arguments hierfly object to visualise in GGobi
-# @seealso \code{\link{cut.hierfly}}
-# @keyword cluster
-# @keyword dynamic
-#X h <- hierfly(iris)
-#X ggobi(h)
-#X h <- hierfly(iris, method="single")
+#' Visualise hierarchical clustering with GGobi.
+#' Displays both data and dendrogram in original high-d space.
+#' 
+#' This adds four new variables to the original data set:
+#' 
+#' \itemize{
+#'    \item ORDER, the order in which the clusters are joined
+#'    \item HEIGHT, the height of the branch, ie. the dissimilarity between the branches
+#'    \item LEVEL, the level of the branch
+#'    \item POINTS, the number of points in the branch
+#' }
+#'
+#' Make sure to select "attach edge set (edges)" in the in the edges menu on the 
+#' plot window, when you create a new plot.
+#' 
+#' A tour over the original variables will show how the clusters agglomerate
+#' in space.   Plotting order vs height, level or points will give various
+#' types of dendograms.  A correlation tour with height/level/points on the y 
+#' axis and the original variables on the x axis will show a mobile blowing 
+#' in the wind.
+#' 
+#' @param data hierfly object to visualise in GGobi
+#' @param ... ignored
+#' @seealso \code{\link{cut.hierfly}}
+#' @keywords cluster dynamic
+#' @method ggobi hierfly
+#' @S3method ggobi hierfly
+#' @examples
+#' h <- hierfly(iris)
+#' ggobi(h)
+#' h <- hierfly(iris, method="single")
 ggobi.hierfly <- function(data, ...) {
   h <- data$hclust
   data <- data$data
@@ -121,19 +125,22 @@ ggobi.hierfly <- function(data, ...) {
   invisible(g)
 }
 
-# Colour hierfly object
-# Colour hierfly object into k clusters
-# 
-# @arguments hierfly object to colour
-# @arguments number of clusters
-# @arguments GGobi instance displaying x, will create new if not specified
-# @keyword cluster
-#X h <- hierfly(iris)
-#X hfly <- ggobi(h)
-#X cut(h, 2, hfly)
-#X h <- hierfly(iris, method="ward")
-#X g <- ggobi(h)
-#X cut(h, 2, g)
+#' Cut hierfly object into k clusters/colours.
+#' 
+#' @param x hierfly object to colour
+#' @param k number of clusters
+#' @param g GGobi instance displaying x, will create new if not specified
+#' @param ... ignored
+#' @keywords cluster
+#' @method cut hierfly
+#' @S3method cut hierfly
+#' @examples
+#' h <- hierfly(iris)
+#' hfly <- ggobi(h)
+#' cut(h, 2, hfly)
+#' h <- hierfly(iris, method="ward")
+#' g <- ggobi(h)
+#' cut(h, 2, g)
 cut.hierfly <- function(x, k=2, g=ggobi(x), ...) {
   d <- g[1]
   glyph_colour(d) <- c(cutree(x$hclust, k=k) + 1, rep(1, length(x$hclust$height)))

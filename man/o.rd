@@ -1,10 +1,10 @@
-\name{Olives data cluster object}
-\docType{data}
+\name{o}
 \alias{o}
-\title{Olives data stored in clusterfly object}
-\description{
-
-}
+\title{Olives data.}
 \usage{data(o)}
-\format{}
-\keyword{datasets}
+
+\description{
+  Olives data. Olives data stored in clusterfly object.
+}
+\docType{data}
+\keyword{dataset}

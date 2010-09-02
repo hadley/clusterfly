@@ -1,5 +1,3 @@
-# Fix jittering
-
 som_iterate <- function(df, grid, nsteps = 100, stepsize = 10, alpha = 0.05, radius = NULL) {
   if (is.null(radius)) {
     radius <- c(quantile(unit.distances(grid, FALSE), 0.67), 0)
@@ -29,7 +27,6 @@ som_iterate <- function(df, grid, nsteps = 100, stepsize = 10, alpha = 0.05, rad
 
   structure(c(list(fit), replicate(nsteps - 1, step(), simplify=FALSE)), class="somiter")
 }
-
 
 summary.somiter <- function(x, ...) {
   interesting <- function(fit) {

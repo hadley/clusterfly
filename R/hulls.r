@@ -1,15 +1,16 @@
-# Add convex hulls
-# Add conver hulls using the tool qconvex
-# 
-# To use this command you must have qconvex installed and available
-# on your path.   I'm not sure if this will work on windows (probably not)
-# but it's not a big loss, because the technique isn't very useful
-# anyway.
-# 
-# @arguments ggobi dataset
-# @arguments ggobi reference
-# @arguments grouping variable
-# @keyword hplot 
+#' Add convex hulls
+#' Add conver hulls using the tool qconvex
+#' 
+#' To use this command you must have qconvex installed and available
+#' on your path.   I'm not sure if this will work on windows (probably not)
+#' but it's not a big loss, because the technique isn't very useful
+#' anyway.
+#' 
+#' @export
+#' @param gd ggobi dataset
+#' @param g ggobi reference
+#' @param by grouping variable
+#' @keywords hplot 
 addhull <- function(gd, g, by) {
   mat <- as.data.frame(gd)
   rownames(mat) <- rownames(gd)
@@ -26,10 +27,6 @@ addhull <- function(gd, g, by) {
   setEdges(g['hulls'], edges[,1], edges[,2])
 }
 
-# qhull
-# Generate convex hulls for a matrix
-# 
-# @keyword internal 
 qhull <- function(mat) {
   if (nrow(mat) < 5) return()
   #if (is.null(rownames(mat))) rownames(mat) <- 1:nrow(mat)
@@ -46,10 +43,6 @@ qhull <- function(mat) {
   #edges
 }
 
-# qhullout
-# Generate output data to calculate convex hulls
-# 
-# @keyword internal 
 qhullout <- function(mat) {
   paste(
     ncol(mat), "\n",
