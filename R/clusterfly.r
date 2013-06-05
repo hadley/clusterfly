@@ -1,7 +1,7 @@
 #' Creates a convenient data structure for dealing with a dataset and a number
 #' of alternative clusterings.
-#' 
-#' Once you have created a clusterfly object, you can add 
+#'
+#' Once you have created a clusterfly object, you can add
 #' clusterings to it with \code{\link{cfly_cluster}}, and
 #' visualise then in GGobi with \code{\link{cfly_show}} and
 #' \code{\link{cfly_animate}}. Static graphics are also
@@ -10,10 +10,10 @@
 #' the distribution of each variable in each cluster, and
 #' \code{\link{cfly_fluct}} compares two clusterings with a
 #' fluctuation diagram.
-#' 
+#'
 #' If you want to standardise the cluster labelling to one
 #' group, look at \code{\link{clarify}} and \code{\link{cfly_clarify}}
-#' 
+#'
 #' @param df data frame to be clustered
 #' @param extra extra variables to be included in output, but not clustered
 #' @param rescale rescale, if true each variable will be scaled to have mean 0
@@ -27,7 +27,7 @@
 #' @S3method as.data.frame clusterfly
 #' @aliases clusterfly package-clusterfly
 #' @import rggobi
-#' @keywords dynamic 
+#' @keywords dynamic
 #' @examples
 #' olives <- read.csv(ggobi_find_file("data","olive.csv"))
 #' ol <- clusterfly(olives[, -(1:3)], olives[, 2:3])
@@ -57,9 +57,9 @@ clusterfly <- function(df, extra = NULL, rescale=TRUE) {
   }
 
   structure(list(
-    df = df, 
+    df = df,
     extra = extra,
-    clusters = list(), 
+    clusters = list(),
     ggobi = open_ggobi,
     close = close_ggobi
   ), class="clusterfly")
@@ -69,11 +69,11 @@ clusterfly <- function(df, extra = NULL, rescale=TRUE) {
 #' Show in ggobi.
 #' Opens an instance ggobi for this dataset (if not already open), and colours
 #' the points according the cluster assignment.
-#' 
+#'
 #' @param cf clusterfly object
 #' @param idx clustering to display
 #' @param hulls add convex hull? see \code{\link{addhull}} for details
-#' @keywords dynamic 
+#' @keywords dynamic
 #' @export
 #' @examples
 #' o <- olive_example()
@@ -101,19 +101,19 @@ close.clusterfly <- function(con, ...) con$close()
 print.clusterfly <- function(x, ...) {
   cat("Data:     ", paste(names(x$df), collapse=", "), "  [", nrow(x$df), "x", ncol(x$df), "]\n", sep="")
   cat("Extra:    ", paste(names(x$extra), collapse=", "), "  [", nrow(x$extra), "x", ncol(x$df), "]\n", sep="")
-  cat("Clusters: ", paste(names(x$clusters), collapse=", "), "\n", sep="")  
+  cat("Clusters: ", paste(names(x$clusters), collapse=", "), "\n", sep="")
 }
 
 
 #' Convert clusterfly object to data.frame.
-#' Concatenates data and cluster assignments into one data.frame.  
+#' Concatenates data and cluster assignments into one data.frame.
 #' Cluster assignments are prefixed with \code{cl_}.
-#' 
+#'
 #' @method as.data.frame clusterfly
 #' @S3method as.data.frame clusterfly
 #' @param x clusterfly object
 #' @param ... ignored
-#' @keywords manip 
+#' @keywords manip
 as.data.frame.clusterfly <- function(x, ...) {
   cl <- as.data.frame(x$clusters)
   if (ncol(cl) > 0) {
@@ -125,11 +125,11 @@ as.data.frame.clusterfly <- function(x, ...) {
 }
 
 #' Match all cluster indices to common reference.
-#' 
+#'
 #' It's a good idea to run this before running any
-#' animation sequences so that unnecessary colour 
+#' animation sequences so that unnecessary colour
 #' changes are minimised.
-#' 
+#'
 #' @param cf clusterfly object
 #' @param reference index to reference clustering
 #' @param method method to use, see \code{\link{clarify}}
@@ -145,19 +145,19 @@ cfly_clarify <- function(cf, reference=1, method="rowmax") {
 }
 
 #' Add clustering.
-#' 
+#'
 #' Clustering method needs to respond to \code{\link{clusters}},
 #' if the default does not work, you will need to write
 #' your own to extract clusters.
-#' 
+#'
 #' @param cf clusterfly object
 #' @param method clusterfing method (function)
 #' @param ... arguments passed to clustering method
 #' @param name name of clustering
-#' @keywords manip 
+#' @keywords manip
 #' @export
 #' @examples
-#' o <- olive_example() 
+#' o <- olive_example()
 #' cfly_cluster(o, kmeans, 4)
 #' cfly_cluster(o, kmeans, 4, name="blah")
 cfly_cluster <- function(cf, method, ..., name = deparse(substitute(method))) {
@@ -167,20 +167,20 @@ cfly_cluster <- function(cf, method, ..., name = deparse(substitute(method))) {
 
 
 #' Dynamic plot: Animate glyph colours
-#' 
+#'
 #' This function will animate until you manually break the loop
-#' using Ctrl-Break or Ctrl-C.   
-#' 
+#' using Ctrl-Break or Ctrl-C.
+#'
 #' @param cf list of cluster ids that you want to animate across
 #' @param clusters clusters to display
 #' @param pause clusters number of seconds to pause between each change
 #' @param print print current cluster to screen?
 #' @param max_iterations maximum number of interations
-#' @keywords dynamic 
+#' @keywords dynamic
 #' @export
 #' @examples
 #' # Press Ctrl-Break or Ctrl-C to exit
-#' o <- olive_example() 
+#' o <- olive_example()
 #' cfly_animate(cfly_clarify(o), max = 5)
 #' if (!interactive()) close(o)
 cfly_animate <- function(cf, clusters = seq_along(cf$clusters), pause = 1, print=TRUE, max_iterations = 100) {
@@ -198,7 +198,7 @@ cfly_animate <- function(cf, clusters = seq_along(cf$clusters), pause = 1, print
       Sys.sleep(pause)
 
       count <- count + 1
-      if (count > max_iterations) return()      
+      if (count > max_iterations) return()
     }
   }
 }
