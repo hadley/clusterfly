@@ -28,3 +28,17 @@ clarify <- function(a, b, method="greedy") {
   m <- matchClasses(table(a,b), method=method, verbose=FALSE)
   as.vector(m[a])
 }
+
+
+rescaler <- function(df, type = "sd") {
+  f <- switch(type,
+    rank = function(x, ...) rank(x, ...),
+    var = , sd = function(x) (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE),
+    robust = function(x) (x - median(x, na.rm = TRUE)) / mad(x, na.rm = TRUE),
+    I = x,
+    range = function(x) (x - min(x, na.rm = TRUE)) / diff(range(x, na.rm = TRUE)))
+
+  continuous <- vapply(df, is.numeric, logical(1))
+  df[continuous] <- lapply(df[continuous], f)
+  df
+}

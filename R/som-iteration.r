@@ -48,6 +48,7 @@ summary.somiter <- function(x, ...) {
   df
 }
 
+#' @importFrom reshape2 melt
 ggobi.somiter <- function(data, extra = NULL, ...) {
 
   g <- ggobi(data[[1]], extra=extra)

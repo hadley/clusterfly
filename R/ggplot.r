@@ -41,6 +41,7 @@ cfly_pcp <- function(cfly, index, ...) {
 #' cfly_dist(o, "kmeans")
 #' cfly_dist(o, "kmeans") + scale_y_continuous(limit=c(0, 2))
 #' if (!interactive()) close(o)
+#' @importFrom reshape2 melt
 cfly_dist <- function(cfly, index, scale="range") {
   df <- cbind(cfly$df, .cluster=factor(cfly$clusters[[index]]))
   dfm <- melt(rescaler(df, scale), id=".cluster")

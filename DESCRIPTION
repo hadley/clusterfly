@@ -10,10 +10,10 @@ Description: Visualise clustering algorithms with GGobi.  Contains both
 URL: http://had.co.nz/clusterfly
 Depends:
     ggplot2,
-    reshape,
     rggobi
 Imports:
-    e1071
+    e1071,
+    reshape2
 Suggests:
     som,
     mclust,
