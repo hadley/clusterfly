@@ -10,14 +10,24 @@
 #' @export
 #' @keywords hplot
 #' @examples
+#' if (require("ggplot2")) {
 #' o <- olive_example()
 #' cfly_pcp(o, "kmeans")
-#' if (!interactive()) close(o)
+#' cfly_pcp(o, "kmeans", alpha = 1/10)
+#' cfly_pcp(o, "kmeans", alpha = 1/10) + coord_flip()
+#' }
 cfly_pcp <- function(cfly, index, ...) {
-  df <- cbind(cfly$df, .cluster=cfly$clusters[[index]])
-  ggpcp(df, vars = setdiff(names(df), ".cluster")) +
+  stopifnot(require("ggplot2"))
+
+  df <- data.frame(
+    rescaler(cfly$df),
+    .cluster = cfly$clusters[[index]],
+    .id = 1:nrow(cfly$df))
+  dfm <- melt(df, id = c(".cluster", ".id"))
+
+  ggplot(dfm, aes(variable, value, group = .id)) +
     geom_line(...) +
-    facet_grid(. ~ .cluster)
+    facet_wrap(~ .cluster)
 }
 
 #' Static plot: Variable distribution.
@@ -37,16 +47,21 @@ cfly_pcp <- function(cfly, index, ...) {
 #' @keywords hplot
 #' @export
 #' @examples
+#' if (require("ggplot2")) {
 #' o <- olive_example()
 #' cfly_dist(o, "kmeans")
 #' cfly_dist(o, "kmeans") + scale_y_continuous(limit=c(0, 2))
-#' if (!interactive()) close(o)
+#' }
 #' @importFrom reshape2 melt
 cfly_dist <- function(cfly, index, scale="range") {
+  stopifnot(require("ggplot2"))
+
   df <- cbind(cfly$df, .cluster=factor(cfly$clusters[[index]]))
   dfm <- melt(rescaler(df, scale), id=".cluster")
 
-  ggplot(dfm, aes(x=value)) + geom_density() + facet_grid(.cluster ~ variable)
+  ggplot(dfm, aes(x = value)) +
+    geom_density() +
+    facet_grid(.cluster ~ variable)
 }
 
 #' Static plot: Fluctuation diagram.
@@ -56,20 +71,31 @@ cfly_dist <- function(cfly, index, scale="range") {
 #' @param a first clustering, will be reordered to match \code{b} if clarify=TRUE
 #' @param b second clustering
 #' @param clarify use \code{\link{clarify}} to rearranged cluster indices?
-#' @param ... other arguments passed on to ggfluctuation
 #' @keywords hplot
 #' @export
+#' @importFrom plyr count
 #' @examples
+#' if (require("ggplot2")) {
 #' o <- olive_example()
-#' cfly_fluct(o, "kmeans","Region", clarify=TRUE)
-#' if (!interactive()) close(o)
+#' cfly_fluct(o, "kmeans", "Region")
+#' cfly_fluct(o, "kmeans", "Region", clarify = FALSE)
+#' }
 cfly_fluct <- function(cfly, a, b, clarify=TRUE, ...) {
+  stopifnot(require("ggplot2"))
+
   ca <- cfly$clusters[[a]]
   cb <- cfly$clusters[[b]]
-
   if (clarify) ca <- clarify(ca, cb)
 
-  p <- ggfluctuation(table(ca,cb), ...)
-  p$aspect.ratio <- 1
-  p + scale_y_discrete(a) + scale_x_discrete(b)
+  counts <- count(data.frame(x = factor(ca), y = factor(cb)))
+  nx <- length(levels(counts$x))
+  ny <- length(levels(counts$y))
+
+  counts$freq <- sqrt(counts$freq / max(counts$freq))
+
+  ggplot(counts, aes_string(x = "x", y = "y", height = "freq", width = "freq")) +
+    geom_tile(colour = "white") +
+    scale_y_discrete(a) +
+    scale_x_discrete(b) +
+    theme(aspect.ratio = ny/nx)
 }

@@ -9,15 +9,16 @@ Description: Visualise clustering algorithms with GGobi.  Contains both
     visualisations for model-based, hierarchical and SOM clustering.
 URL: http://had.co.nz/clusterfly
 Depends:
-    ggplot2,
     rggobi
 Imports:
     e1071,
-    reshape2
+    reshape2,
+    plyr
 Suggests:
     som,
     mclust,
-    kohonen
+    kohonen,
+    ggplot2
 License: MIT
 LazyData: true
 Collate:

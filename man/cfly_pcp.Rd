@@ -19,9 +19,12 @@ Draw a parallel coordinates plot, facetted across clustering.}
   around.
 }
 \examples{
+if (require("ggplot2")) {
 o <- olive_example()
 cfly_pcp(o, "kmeans")
-if (!interactive()) close(o)
+cfly_pcp(o, "kmeans", alpha = 1/10)
+cfly_pcp(o, "kmeans", alpha = 1/10) + coord_flip()
+}
 }
 \keyword{hplot}
 

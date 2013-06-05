@@ -15,8 +15,6 @@ Draw a fluctuation diagram comparing two clusterings.}
 
   \item{clarify}{use \code{\link{clarify}} to rearranged
   cluster indices?}
-
-  \item{...}{other arguments passed on to ggfluctuation}
 }
 \description{
   Static plot: Fluctuation diagram. Draw a fluctuation
@@ -25,7 +23,6 @@ Draw a fluctuation diagram comparing two clusterings.}
 \examples{
 o <- olive_example()
 cfly_fluct(o, "kmeans","Region", clarify=TRUE)
-if (!interactive()) close(o)
 }
 \keyword{hplot}
 

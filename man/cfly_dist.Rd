@@ -24,10 +24,11 @@ Draw a density plot for each continuous variable, facetted across clustering.}
   \url{http://www.rosuda.org/gaguin}.
 }
 \examples{
+if (require("ggplot2")) {
 o <- olive_example()
 cfly_dist(o, "kmeans")
 cfly_dist(o, "kmeans") + scale_y_continuous(limit=c(0, 2))
-if (!interactive()) close(o)
+}
 }
 \keyword{hplot}
 
