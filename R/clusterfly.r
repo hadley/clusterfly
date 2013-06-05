@@ -26,6 +26,7 @@
 #' @S3method "[[<-" clusterfly
 #' @S3method as.data.frame clusterfly
 #' @aliases clusterfly package-clusterfly
+#' @import rggobi
 #' @keywords dynamic 
 #' @examples
 #' olives <- read.csv(ggobi_find_file("data","olive.csv"))
