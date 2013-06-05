@@ -21,8 +21,11 @@ Draw a fluctuation diagram comparing two clusterings.}
   diagram comparing two clusterings.
 }
 \examples{
+if (require("ggplot2")) {
 o <- olive_example()
-cfly_fluct(o, "kmeans","Region", clarify=TRUE)
+cfly_fluct(o, "kmeans", "Region")
+cfly_fluct(o, "kmeans", "Region", clarify = FALSE)
+}
 }
 \keyword{hplot}
 

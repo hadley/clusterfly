@@ -3,7 +3,7 @@
 \title{Visualise Kohonen self organising maps with GGobi
 Displays both data, and map in original high-d space.}
 \usage{
-  ggobi.som(data, ...)
+  \method{ggobi}{som} (data, ...)
 }
 \arguments{
   \item{data}{SOM object}

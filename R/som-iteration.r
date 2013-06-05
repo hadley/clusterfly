@@ -28,6 +28,7 @@ som_iterate <- function(df, grid, nsteps = 100, stepsize = 10, alpha = 0.05, rad
   structure(c(list(fit), replicate(nsteps - 1, step(), simplify=FALSE)), class="somiter")
 }
 
+#' @S3method summary somiter
 summary.somiter <- function(x, ...) {
   interesting <- function(fit) {
     df <- data.frame(
@@ -49,6 +50,7 @@ summary.somiter <- function(x, ...) {
 }
 
 #' @importFrom reshape2 melt
+#' @S3method ggobi somiter
 ggobi.somiter <- function(data, extra = NULL, ...) {
 
   g <- ggobi(data[[1]], extra=extra)

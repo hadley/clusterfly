@@ -20,11 +20,6 @@
 #'   and variance 1.
 #' @seealso vignette("introduction")
 #' @export
-#' @S3method ggobi clusterfly
-#' @S3method close clusterfly
-#' @S3method print clusterfly
-#' @S3method "[[<-" clusterfly
-#' @S3method as.data.frame clusterfly
 #' @aliases clusterfly package-clusterfly
 #' @import rggobi
 #' @keywords dynamic
@@ -90,14 +85,18 @@ cfly_show <- function(cf, idx = "true", hulls = FALSE) {
   }
 }
 
+#' @S3method ggobi clusterfly
 ggobi.clusterfly <- function(data, ...) data$ggobi()
+#' @S3method close clusterfly
 close.clusterfly <- function(con, ...) con$close()
 
+#' @S3method [[<- clusterfly
 "[[<-.clusterfly" <- function(x, i, value) {
   x$clusters[[i]] <- value
   x
 }
 
+#' @S3method print clusterfly
 print.clusterfly <- function(x, ...) {
   cat("Data:     ", paste(names(x$df), collapse=", "), "  [", nrow(x$df), "x", ncol(x$df), "]\n", sep="")
   cat("Extra:    ", paste(names(x$extra), collapse=", "), "  [", nrow(x$extra), "x", ncol(x$df), "]\n", sep="")
@@ -109,8 +108,8 @@ print.clusterfly <- function(x, ...) {
 #' Concatenates data and cluster assignments into one data.frame.
 #' Cluster assignments are prefixed with \code{cl_}.
 #'
+#' @export
 #' @method as.data.frame clusterfly
-#' @S3method as.data.frame clusterfly
 #' @param x clusterfly object
 #' @param ... ignored
 #' @keywords manip
