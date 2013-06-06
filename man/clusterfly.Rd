@@ -38,10 +38,12 @@ ol <- cfly_cluster(ol, kmeans, 4, name="k4-1")
 ol <- cfly_cluster(ol, kmeans, 4, name="k4-2")
 ol <- cfly_cluster(ol, kmeans, 4, name="k4-3")
 
+if (interactive()) {
 ggobi(ol)
 cfly_show(ol, "k4-1")
 cfly_animate(ol, max = 5)
-if (!interactive()) close(ol)
+close(ol)
+}
 }
 \seealso{
   vignette("introduction")

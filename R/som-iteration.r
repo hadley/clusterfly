@@ -29,7 +29,7 @@ som_iterate <- function(df, grid, nsteps = 100, stepsize = 10, alpha = 0.05, rad
 }
 
 #' @S3method summary somiter
-summary.somiter <- function(x, ...) {
+summary.somiter <- function(object, ...) {
   interesting <- function(fit) {
     df <- data.frame(
       alpha_start = fit$alpha[1], alpha_end = fit$alpha[2],
@@ -42,7 +42,7 @@ summary.somiter <- function(x, ...) {
     df$map <- list(fit$grid$pts[fit$unit.classif, ])
     df
   }
-  df <- do.call("rbind", lapply(x, interesting))
+  df <- do.call("rbind", lapply(object, interesting))
   df$step <- 1:nrow(df)
   class(df) <- c("somitersum", class(df))
   rownames(df) <- paste("step", 1:nrow(df), sep="")
@@ -51,17 +51,19 @@ summary.somiter <- function(x, ...) {
 
 #' @importFrom reshape2 melt
 #' @S3method ggobi somiter
+#' @importFrom RGtk2 gSignalConnect ==.RGtkObject
 ggobi.somiter <- function(data, extra = NULL, ...) {
 
   g <- ggobi(data[[1]], extra=extra)
   all_fits <- summary(data)
-  fits <- subset(all_fits, select= -c(codes, map))
+  fits <- fits[setdiff(names(fits), c("codes", "map"))]
 
   jittering <- jitter(all_fits[[1, "map"]]) - all_fits[[1, "map"]]
 
   distances <- melt(sapply(data, function(x) x$distances))
   names(distances) <- c("oid", "step", "value")
   distances$oid <- factor(distances$oid)
+  oid <- NULL # stupid hack for R CMD check
   ggobi_longitudinal(distances, step, oid, g = g)
 
   ggobi_longitudinal(fits, step, g = g)

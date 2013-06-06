@@ -13,7 +13,8 @@ Depends:
 Imports:
     e1071,
     reshape2,
-    plyr
+    plyr,
+    RGtk2
 Suggests:
     som,
     mclust,

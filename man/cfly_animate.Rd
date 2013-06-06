@@ -24,9 +24,11 @@
 }
 \examples{
 # Press Ctrl-Break or Ctrl-C to exit
+if (interactive()) {
 o <- olive_example()
 cfly_animate(cfly_clarify(o), max = 5)
-if (!interactive()) close(o)
+close(o)
+}
 }
 \keyword{dynamic}
 

@@ -35,10 +35,12 @@ rescaler <- function(df, type = "sd") {
     rank = function(x, ...) rank(x, ...),
     var = , sd = function(x) (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE),
     robust = function(x) (x - median(x, na.rm = TRUE)) / mad(x, na.rm = TRUE),
-    I = x,
+    I = function(x) x,
     range = function(x) (x - min(x, na.rm = TRUE)) / diff(range(x, na.rm = TRUE)))
 
   continuous <- vapply(df, is.numeric, logical(1))
   df[continuous] <- lapply(df[continuous], f)
   df
 }
+
+compact <- function(x) Filter(Negate(is.null), x)

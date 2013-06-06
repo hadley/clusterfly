@@ -15,6 +15,7 @@
 #' mefly(vvi, iris[,-5])
 #' mefly(vvv, iris[,-5])
 #' }
+#' @importFrom plyr rbind.fill
 mefly <- function(model, data) {
   mean <- model$parameters$mean
   var <- model$parameters$variance$sigma

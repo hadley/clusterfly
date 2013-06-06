@@ -30,10 +30,12 @@
 #' ol <- cfly_cluster(ol, kmeans, 4, name="k4-2")
 #' ol <- cfly_cluster(ol, kmeans, 4, name="k4-3")
 #'
+#' if (interactive()) {
 #' ggobi(ol)
 #' cfly_show(ol, "k4-1")
 #' cfly_animate(ol, max = 5)
-#' if (!interactive()) close(ol)
+#' close(ol)
+#' }
 clusterfly <- function(df, extra = NULL, rescale=TRUE) {
   if (rescale) df <- rescaler(df)
 
@@ -179,9 +181,11 @@ cfly_cluster <- function(cf, method, ..., name = deparse(substitute(method))) {
 #' @export
 #' @examples
 #' # Press Ctrl-Break or Ctrl-C to exit
+#' if (interactive()) {
 #' o <- olive_example()
 #' cfly_animate(cfly_clarify(o), max = 5)
-#' if (!interactive()) close(o)
+#' close(o)
+#' }
 cfly_animate <- function(cf, clusters = seq_along(cf$clusters), pause = 1, print=TRUE, max_iterations = 100) {
   g <- cf$ggobi()
   gd <- g[1]

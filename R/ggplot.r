@@ -25,7 +25,7 @@ cfly_pcp <- function(cfly, index, ...) {
     .id = 1:nrow(cfly$df))
   dfm <- melt(df, id = c(".cluster", ".id"))
 
-  ggplot(dfm, aes(variable, value, group = .id)) +
+  ggplot(dfm, aes_string(x = "variable", y = "value", group = ".id")) +
     geom_line(...) +
     facet_wrap(~ .cluster)
 }
@@ -59,7 +59,7 @@ cfly_dist <- function(cfly, index, scale="range") {
   df <- cbind(cfly$df, .cluster=factor(cfly$clusters[[index]]))
   dfm <- melt(rescaler(df, scale), id=".cluster")
 
-  ggplot(dfm, aes(x = value)) +
+  ggplot(dfm, aes_string(x = "value")) +
     geom_density() +
     facet_grid(.cluster ~ variable)
 }
@@ -80,7 +80,7 @@ cfly_dist <- function(cfly, index, scale="range") {
 #' cfly_fluct(o, "kmeans", "Region")
 #' cfly_fluct(o, "kmeans", "Region", clarify = FALSE)
 #' }
-cfly_fluct <- function(cfly, a, b, clarify=TRUE, ...) {
+cfly_fluct <- function(cfly, a, b, clarify=TRUE) {
   stopifnot(require("ggplot2"))
 
   ca <- cfly$clusters[[a]]

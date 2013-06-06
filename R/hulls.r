@@ -24,7 +24,9 @@ addhull <- function(gd, g, by) {
   edges <- do.call(rbind, compact(edges))
 
   g['hulls'] <- data.frame(id=as.numeric(edges[,3]))
-  setEdges(g['hulls'], edges[,1], edges[,2])
+  edges(g['hulls']) <- edges
+
+  invisible()
 }
 
 qhull <- function(mat) {
@@ -34,7 +36,9 @@ qhull <- function(mat) {
   output <- system(paste("echo '", qhullout(mat), "' | qconvex QbB i"), TRUE)[-1]
   facets <- do.call(rbind, lapply(strsplit(output, " "), function(x) as.numeric(sort(x)))) + 1
 
-  combs <- subset(expand.grid(i = 1:ncol(facets), j = 1:ncol(facets)), i < j)
+  combs <- expand.grid(i = 1:ncol(facets), j = 1:ncol(facets))
+  combs <- combs[combs$i < combs$j, , drop = FALSE]
+
   edges <- unique(do.call(rbind,
     lapply(1:nrow(combs), function(x) facets[, unlist(combs[x,])])
   ))

@@ -3,7 +3,7 @@
 \title{Static plot: Fluctuation diagram.
 Draw a fluctuation diagram comparing two clusterings.}
 \usage{
-  cfly_fluct(cfly, a, b, clarify = TRUE, ...)
+  cfly_fluct(cfly, a, b, clarify = TRUE)
 }
 \arguments{
   \item{cfly}{clusterfly object}
