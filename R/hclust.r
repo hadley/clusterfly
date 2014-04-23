@@ -1,7 +1,7 @@
 # Need a new type of linking to make this work
 # Brushing a node should highlight all nodes and leaves below it
 # (investigate nested set representation for efficient storage)
-# 
+#
 # Can this be done using rggobi and the old linking code?
 # Should it be added to ggobi as a new type of linking?
 #    * If so, as the general case - defined by edges?
@@ -11,10 +11,10 @@
 #' Visualisig hierarchical clustering.
 #' This method supplements a data set with information needed to draw a
 #' dendrogram
-#' 
-#' Intermediate cluster nodes are added as needed, and positioned at the 
+#'
+#' Intermediate cluster nodes are added as needed, and positioned at the
 #' centroid of the combined clusters.
-#' 
+#'
 #' @param data data set
 #' @param metric distance metric to use, see \code{\link{dist}} for list of
 #'   possibilities
@@ -24,7 +24,6 @@
 #' @seealso \code{\link{cut.hierfly}}, \code{\link{ggobi.hierfly}}
 #' @keywords cluster
 #' @export
-#' @S3method print hierfly
 #' @examples
 #' h <- hierfly(iris)
 #' ggobi(h)
@@ -48,17 +47,17 @@ hierfly <- function(data, metric="euclidean", method="average") {
   }
 
   data$node <- (as.numeric(rownames(data)) < 0) + 0
-  
+
   structure(list(data=data, hclust=h), class="hierfly")
 }
 
 combinerows <- function(df, cat) {
   same <- function(x) if (length(unique(x)) == 1) x[1] else NA
   points <- df$POINTS
-  
+
   cont <- as.data.frame(lapply(df[, !cat, drop=FALSE] * points, sum)) / sum(points)
   cat <- as.data.frame(lapply(df[, cat, drop=FALSE], same))
-  
+
   df <- if (nrow(cont) > 0 && nrow(cat) > 0) {
     cbind(cont, cat)
   } else if (nrow(cont) > 0) {
@@ -70,15 +69,16 @@ combinerows <- function(df, cat) {
   df
 }
 
+#' @export
 print.hierfly <- function(x, ...) {
   print(str(x))
 }
 
 #' Visualise hierarchical clustering with GGobi.
 #' Displays both data and dendrogram in original high-d space.
-#' 
+#'
 #' This adds four new variables to the original data set:
-#' 
+#'
 #' \itemize{
 #'    \item ORDER, the order in which the clusters are joined
 #'    \item HEIGHT, the height of the branch, ie. the dissimilarity between the branches
@@ -86,21 +86,20 @@ print.hierfly <- function(x, ...) {
 #'    \item POINTS, the number of points in the branch
 #' }
 #'
-#' Make sure to select "attach edge set (edges)" in the in the edges menu on the 
+#' Make sure to select "attach edge set (edges)" in the in the edges menu on the
 #' plot window, when you create a new plot.
-#' 
+#'
 #' A tour over the original variables will show how the clusters agglomerate
 #' in space.   Plotting order vs height, level or points will give various
-#' types of dendograms.  A correlation tour with height/level/points on the y 
-#' axis and the original variables on the x axis will show a mobile blowing 
+#' types of dendograms.  A correlation tour with height/level/points on the y
+#' axis and the original variables on the x axis will show a mobile blowing
 #' in the wind.
-#' 
+#'
 #' @param data hierfly object to visualise in GGobi
 #' @param ... ignored
 #' @seealso \code{\link{cut.hierfly}}
 #' @keywords cluster dynamic
-#' @method ggobi hierfly
-#' @S3method ggobi hierfly
+#' @export
 #' @examples
 #' h <- hierfly(iris)
 #' ggobi(h)
@@ -108,7 +107,7 @@ print.hierfly <- function(x, ...) {
 ggobi.hierfly <- function(data, ...) {
   h <- data$hclust
   data <- data$data
-  
+
   g <- ggobi(data)
   d <- g[1]
   glyph_type(d) <- ifelse(data$node != 0, 1, 6)
@@ -121,19 +120,18 @@ ggobi.hierfly <- function(data, ...) {
 
   d <- displays(g)[[1]]
   edges(d) <- g[2]
-  
+
   invisible(g)
 }
 
 #' Cut hierfly object into k clusters/colours.
-#' 
+#'
 #' @param x hierfly object to colour
 #' @param k number of clusters
 #' @param g GGobi instance displaying x, will create new if not specified
 #' @param ... ignored
 #' @keywords cluster
-#' @method cut hierfly
-#' @S3method cut hierfly
+#' @export
 #' @examples
 #' h <- hierfly(iris)
 #' hfly <- ggobi(h)

@@ -1,12 +1,12 @@
 #' Extract clusters from clustering object.
-#' 
+#'
 #' @param x object
 #' @export
-#' @S3method clusters kmeans
-#' @S3method clusters default
-#' @S3method clusters partition
 #' @keywords internal
 clusters <- function(x) UseMethod("clusters", x)
+#' @export
 clusters.kmeans <- function(x) as.vector(x$cluster)
+#' @export
 clusters.default <- function(x) as.vector(x)
+#' @export
 clusters.partition <- function(x) x$clustering

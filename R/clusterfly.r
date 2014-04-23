@@ -87,18 +87,18 @@ cfly_show <- function(cf, idx = "true", hulls = FALSE) {
   }
 }
 
-#' @S3method ggobi clusterfly
+#' @export
 ggobi.clusterfly <- function(data, ...) data$ggobi()
-#' @S3method close clusterfly
+#' @export
 close.clusterfly <- function(con, ...) con$close()
 
-#' @S3method [[<- clusterfly
+#' @export
 "[[<-.clusterfly" <- function(x, i, value) {
   x$clusters[[i]] <- value
   x
 }
 
-#' @S3method print clusterfly
+#' @export
 print.clusterfly <- function(x, ...) {
   cat("Data:     ", paste(names(x$df), collapse=", "), "  [", nrow(x$df), "x", ncol(x$df), "]\n", sep="")
   cat("Extra:    ", paste(names(x$extra), collapse=", "), "  [", nrow(x$extra), "x", ncol(x$df), "]\n", sep="")

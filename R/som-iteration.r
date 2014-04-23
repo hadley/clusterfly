@@ -28,7 +28,7 @@ som_iterate <- function(df, grid, nsteps = 100, stepsize = 10, alpha = 0.05, rad
   structure(c(list(fit), replicate(nsteps - 1, step(), simplify=FALSE)), class="somiter")
 }
 
-#' @S3method summary somiter
+#' @export
 summary.somiter <- function(object, ...) {
   interesting <- function(fit) {
     df <- data.frame(
@@ -50,8 +50,8 @@ summary.somiter <- function(object, ...) {
 }
 
 #' @importFrom reshape2 melt
-#' @S3method ggobi somiter
 #' @importFrom RGtk2 gSignalConnect ==.RGtkObject
+#' @export
 ggobi.somiter <- function(data, extra = NULL, ...) {
 
   g <- ggobi(data[[1]], extra=extra)

@@ -61,7 +61,7 @@ ggobi.som <- function(data, ...) {
   invisible(g)
 }
 
-#' @S3method ggobi kohonen
+#' @export
 #' @importFrom plyr rbind.fill
 ggobi.kohonen <- function(data, extra = NULL, ...) {
 
