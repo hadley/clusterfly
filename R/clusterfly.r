@@ -24,7 +24,7 @@
 #' @import rggobi
 #' @keywords dynamic
 #' @examples
-#' olives <- olive_example()
+#' ol <- olive_example()
 #'
 #' if (interactive()) {
 #' ggobi(ol)

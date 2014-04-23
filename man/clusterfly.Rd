@@ -31,7 +31,7 @@ If you want to standardise the cluster labelling to one
 group, look at \code{\link{clarify}} and \code{\link{cfly_clarify}}
 }
 \examples{
-olives <- olive_example()
+ol <- olive_example()
 
 if (interactive()) {
 ggobi(ol)
