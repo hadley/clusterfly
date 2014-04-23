@@ -31,11 +31,7 @@ If you want to standardise the cluster labelling to one
 group, look at \code{\link{clarify}} and \code{\link{cfly_clarify}}
 }
 \examples{
-olives <- read.csv(ggobi_find_file("data","olive.csv"))
-ol <- clusterfly(olives[, -(1:3)], olives[, 2:3])
-ol <- cfly_cluster(ol, kmeans, 4, name="k4-1")
-ol <- cfly_cluster(ol, kmeans, 4, name="k4-2")
-ol <- cfly_cluster(ol, kmeans, 4, name="k4-3")
+olives <- olive_example()
 
 if (interactive()) {
 ggobi(ol)
